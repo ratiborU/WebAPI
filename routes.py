@@ -57,87 +57,11 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
         await manager.broadcast(f"Пользователь #{client_id} покинул(а) чат")
 
 
-# # Категории
-# @router_categories.post("/", response_model=schemas.Category)
-# async def create_category_route(category_data: schemas.CategoryCreate, db: Session = Depends(get_db)):
-#     category = create_category(db, category_data)
-#     await notify_clients(f"Category added: {category.name}")
-#     return category
-#
-#
-# @router_categories.get("/", response_model=List[schemas.Category])
-# async def read_categories(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-#     categories = get_categories(db, skip=skip, limit=limit)
-#     return categories
-#
-#
-# @router_categories.get("/{category_id}", response_model=schemas.Category)
-# async def read_category(category_id: int, db: Session = Depends(get_db)):
-#     category = get_category(db, category_id)
-#     return category
-#
-#
-# @router_categories.patch("/{category_id}", response_model=schemas.Category)
-# async def update_category_route(category_id: int, category_data: schemas.CategoryUpdate, db: Session = Depends(get_db)):
-#     updated_category = update_category(db, category_id, category_data)
-#     if updated_category:
-#         await notify_clients(f"Category updated: {updated_category.name}")
-#         return updated_category
-#     return {"message": "Category not found"}
-#
-#
-# @router_categories.delete("/{category_id}")
-# async def delete_category_route(category_id: int, db: Session = Depends(get_db)):
-#     deleted = delete_category(db, category_id)
-#     if deleted:
-#         await notify_clients(f"Category deleted: ID {category_id}")
-#         return {"message": "Category deleted"}
-#     return {"message": "Category not found"}
-#
-#
-# # Товары
-# @router_items.post("/", response_model=schemas.Item)
-# async def create_item_route(schema: schemas.ItemCreate, db: Session = Depends(get_db)):
-#     item = create_item(db, schema)
-#     await notify_clients(f"Item added: {item.name}")
-#     return item
-#
-#
-# @router_items.get("/", response_model=List[schemas.Item])
-# async def read_items(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-#     items = get_items(db, skip=skip, limit=limit)
-#     return items
-#
-#
-# @router_items.get("/{item_id}", response_model=schemas.Item)
-# async def read_item(item_id: int, db: Session = Depends(get_db)):
-#     item = get_item(db, item_id)
-#     return item
-#
-#
-# @router_items.patch("/{item_id}")
-# async def update_item_route(item_id: int, schema: schemas.ItemUpdate, db: Session = Depends(get_db)):
-#     updated_item = update_item(db, item_id, schema)
-#     if updated_item:
-#         await notify_clients(f"Item updated: {updated_item.name}")
-#         return updated_item
-#     return {"message": "Item not found"}
-#
-#
-# @router_items.delete("/{item_id}")
-# async def delete_item_route(item_id: int, db: Session = Depends(get_db)):
-#     deleted = delete_item(db, item_id)
-#     if deleted:
-#         await notify_clients(f"Item deleted: ID {item_id}")
-#         return {"message": "Item deleted"}
-#     return {"message": "Item not found"}
-
-
 # Статьи
 @router_articles.post("/", response_model=schemas.Article)
 async def create_article_route(article_data: schemas.ArticleCreate, db: Session = Depends(get_db)):
     article = create_article(db, article_data)
-    await notify_clients(f"Article added: {article.name}")
+    await notify_clients(f"Статья добавлена: {article.name}")
     return article
 
 
@@ -157,26 +81,25 @@ async def read_article(article_id: int, db: Session = Depends(get_db)):
 async def update_article_route(article_id: int, article_data: schemas.ArticleUpdate, db: Session = Depends(get_db)):
     updated_article = update_article(db, article_id, article_data)
     if updated_article:
-        await notify_clients(f"Article updated: {updated_article.name}")
-        await notify_clients(f"Article updated: {updated_article.content}")
+        await notify_clients(f"Статья обновлена: {updated_article.name}")
         return updated_article
-    return {"message": "Article not found"}
+    return {"message": "Статья не нйдена"}
 
 
 @router_articles.delete("/{article_id}")
 async def delete_article_route(article_id: int, db: Session = Depends(get_db)):
     deleted = delete_article(db, article_id)
     if deleted:
-        await notify_clients(f"Article deleted: ID {article_id}")
-        return {"message": "Article deleted"}
-    return {"message": "Article not found"}
+        await notify_clients(f"Статья удалена: ID {article_id}")
+        return {"message": "Статья удалена"}
+    return {"message": "Статья не найдена"}
 
 
 # Комментарии
 @router_comments.post("/", response_model=schemas.Comment)
 async def create_comment_route(schema: schemas.CommentCreate, db: Session = Depends(get_db)):
     comment = create_comment(db, schema)
-    await notify_clients(f"Comment added: {comment.content}")
+    await notify_clients(f"Комментарий добавлен: {comment.content}")
     return comment
 
 
@@ -196,16 +119,16 @@ async def read_comment(comment_id: int, db: Session = Depends(get_db)):
 async def update_comment_route(comment_id: int, schema: schemas.CommentUpdate, db: Session = Depends(get_db)):
     updated_comment = update_comment(db, comment_id, schema)
     if updated_comment:
-        await notify_clients(f"Comment updated: {updated_comment.content}")
+        await notify_clients(f"Комментарий обновлен: {updated_comment.content}")
         return updated_comment
-    return {"message": "Comment not found"}
+    return {"message": "Комментарий не найден"}
 
 
 @router_comments.delete("/{comment_id}")
 async def delete_comment_route(comment_id: int, db: Session = Depends(get_db)):
     deleted = delete_comment(db, comment_id)
     if deleted:
-        await notify_clients(f"Comment deleted: ID {comment_id}")
-        return {"message": "Comment deleted"}
-    return {"message": "Comment not found"}
+        await notify_clients(f"Комментарий удален: ID {comment_id}")
+        return {"message": "Комментарий удален"}
+    return {"message": "Комментарий не найден"}
 
