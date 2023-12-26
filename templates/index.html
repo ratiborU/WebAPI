@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Articles</title>
+    <!-- <link href="{{ url_for('static', path='/css/styles.css') }}" rel="stylesheet"> -->
+
+	  <link href="../static/css/styles.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700;800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <nav class="header__navigation navigation">
+        <a class="navigation__link active" href="#">статьи</a>
+        <a class="navigation__link" href="#">создать</a>
+        <a class="navigation__link" href="#">чат</a>
+      </nav>
+    </header>
+  
+    <main class="main">
+      <div class="main__articles">
+        <div class="main__articles-article article hidden">
+          <div class="article__title">Название статьи</div>
+          <p class="article__text">текст статьи текст статьи текст статьи текст статьи текст статьи текст статьи текст статьи текст статьи текст статьи текст статьи текст статьи текст статьи текст статьи текст статьи </p>
+  
+          <div class="article__comments comments">
+            <p class="comments__title">Комментарии</p>
+            <div class="comments__list">
+              <p class="comments__comment">комментарий</p>
+              <p class="comments__comment">комментарий</p>
+              <p class="comments__comment">комментарий</p>
+              <p class="comments__comment">комментарий</p>
+            </div>
+          </div>
+          <form class="article__add-comment">
+            <input class="article__input" type="text" placeholder="ваш комментарий...">
+            <button class="article__button button" type="submit">отправить</button>
+          </form>
+        </div>
+      </div>
+
+
+      <form class="main__load-article load-article hidden" action="" onsubmit="">
+        <input class="load-article__input" type="text" placeholder="Название статьи">
+        <textarea class="load-article__textarea" name="" id="" placeholder="текст статьи"></textarea>
+        <button class="load-article__button button" type="submit">отправить</button>
+      </form>
+
+      <div class="main__chat chat hidden">
+        <h2 class="chat__title">Ваш ID: <span class="chat__user-id"></span></h2>
+        <form class="chat__form" action="" onsubmit="sendMessage(event)">
+          <input class="chat__input input" type="text" placeholder="Сообщение..."/>
+          <button class="chat__button button">Отправить</button>
+        </form>
+        <ul class='chat__messages'>
+        </ul>
+      </div>
+
+
+      <script>
+        function appendMessage(msg) {
+          let messages = document.querySelector('.chat__messages')
+          let message = document.createElement('li')
+          let content = document.createTextNode(msg)
+          message.append(content)
+          messages.append(message)
+        }
+        let client_id = Math.floor(Math.random() * 1000) + 1
+        document.querySelector(".chat__user-id").textContent = client_id;
+        let ws = new WebSocket(`{{ ws_protocol }}://{{ server_urn }}/ws/${client_id}`);
+      
+        ws.onmessage = function(event) {
+          appendMessage(event.data)
+        };
+      
+        function sendMessage(event) {
+          let input = document.querySelector(".chat__input")
+          ws.send(input.value)
+          input.value = ''
+          event.preventDefault()
+        }
+      </script>
+    </main>
+  </div>
+  
+
+	<!-- <script>
+
+	function appendMessage(msg) {
+		let messages = document.getElementById('messages')
+		let message = document.createElement('li')
+		let content = document.createTextNode(msg)
+		message.appendChild(content)
+		messages.appendChild(message)
+	}
+	let client_id = Math.floor(Math.random() * 1000) + 1
+	document.querySelector("#ws-id").textContent = client_id;
+	let ws = new WebSocket(`{{ ws_protocol }}://{{ server_urn }}/ws/${client_id}`);
+
+	ws.onmessage = function(event) {
+		appendMessage(event.data)
+	};
+
+	function sendMessage(event) {
+		let input = document.getElementById("messageText")
+		ws.send(input.value)
+		input.value = ''
+		event.preventDefault()
+	}
+	</script> -->
+</body>
+<script src="../static/js/index.js"></script>
+</html>
